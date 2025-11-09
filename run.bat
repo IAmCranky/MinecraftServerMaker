@@ -8,11 +8,12 @@ echo %filepath%
 echo Creating directory
 mkdir %filepath%
 
-call Utils\jdk.bat
+:: launches without a console window
+cscript //nologo launcher.vbs
 
 cd %filepath%
 
 :: %~dp0 is basically C:\current_directory\
-powershell -ExecutionPolicy Bypass -File "%~dp0Utils\forge.ps1" -MinecraftVersion "%mc_version%"
+powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "%~dp0Utils\forge.ps1" -MinecraftVersion "%mc_version%"
 pause
 

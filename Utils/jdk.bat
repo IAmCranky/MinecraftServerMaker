@@ -36,7 +36,7 @@ if !errorlevel! neq 0 (
     exit /b 1
 )
 
-:: Use PowerShell to extract the URL (much easier!)
+:: Use PowerShell to extract the URL 
 echo Extracting download URL. . .
 for /f "delims=" %%i in ('powershell -Command "& {$json = Get-Content '%temp_json%' | ConvertFrom-Json; $json.assets | Where-Object {$_.name -like '*windows*' -and $_.name -like '*.msi'} | Select-Object -First 1 | ForEach-Object {$_.browser_download_url}}"') do (
     set "download_url=%%i"
@@ -55,9 +55,15 @@ echo.
 :: Set up the installer path
 set "installer_path=%TEMP%\OpenJDK%java_version%-installer.msi"
 
-:: Download the installer
-echo Downloading Java %java_version% installer. . .
-curl -L --progress-bar -o "!installer_path!" "!download_url!"
+:: Download with GUI progress bar instead of curl
+echo Downloading Java %java_version% installer with GUI progress. . .
+powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "Utils\jdk-progress.ps1" -Url "!download_url!" -OutputPath "!installer_path!" -Title "Downloading Java %java_version%"
+
+if !errorlevel! neq 0 (
+    echo Error: Download failed
+    pause
+    exit /b 1
+)
 
 echo.
 echo Download succeeded! Java %java_version% installer downloaded!
