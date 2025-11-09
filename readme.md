@@ -21,7 +21,3 @@ java -Xmx1024M -Xms1024M -jar minecraft_server.1.21.10.jar nogui
 - Takes the Open JDk version number as an integer 
 - Downloads the OpenJDK msi
 - Installs the OpenJDK version
-
-Minecraft ≥ 1.20.5 and 1.21 requires Java 21.
-Minecraft ≥ 1.18 requires Java 17.
-Minecraft ≥ 1.12 requires Java 8.

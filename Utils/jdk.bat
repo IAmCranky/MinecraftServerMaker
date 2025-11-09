@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-powershell -ExecutionPolicy Bypass -File "uninstallJDK.ps1"
+powershell -ExecutionPolicy Bypass -File "Utils\uninstallJDK.ps1"
 
 cls
 color 06
@@ -62,7 +62,7 @@ curl -L --progress-bar -o "!installer_path!" "!download_url!"
 echo.
 echo Download succeeded! Java %java_version% installer downloaded!
 echo.
-
+cls
 del "%temp_json%" 2>nul
 
 :: Install Java
@@ -70,11 +70,8 @@ set "install_dir=C:\Program Files\Eclipse Adoptium\OpenJDK%java_version%"
 echo Installing Open JDK %java_version% to %install_dir%
 
 powershell -Command "& {Start-Process msiexec -ArgumentList '/i \"!installer_path!\" /passive INSTALLDIR=\"%install_dir%\"' -Wait}"
-cls
+
 echo Installation complete!
 
 echo Cleaning up. . .
 del "%installer_path%" 2>nul
-
-echo Pausing for test.
-pause
