@@ -21,3 +21,11 @@ java -Xmx1024M -Xms1024M -jar minecraft_server.1.21.10.jar nogui
 - Takes the Open JDk version number as an integer 
 - Downloads the OpenJDK msi
 - Installs the OpenJDK version
+
+Passing arguments to bat:
+
+set FORGE_VERSION=%~1
+set SERVER_DIR=%~2
+set INSTALLER_JAR=forge-%FORGE_VERSION%-installer.jar
+
+call your_script.bat "1.20.1-47.2.0" "D:\my-minecraft-server"

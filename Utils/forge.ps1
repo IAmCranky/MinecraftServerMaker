@@ -3,7 +3,6 @@ param(
     [string]$MinecraftVersion
 )
 
-
 try {
     Write-Host "Fetching latest Forge version for Minecraft $MinecraftVersion..." -ForegroundColor Yellow
     
@@ -35,9 +34,29 @@ try {
 }
 
 try{
-    Write-Host "Run with: java -jar $filename" -ForegroundColor Cyan
-    Set-Content "run.bat" -Value "java -jar $filename nogui"
+    java -jar $filename --installServer --extract
+    Set-Content -Path 'user_jvm_args.txt' -Value '-Xmx4G
+-Djava.awt.headless=true'
 } catch {
-    Set-Content "log.txt" -Value "$($_)"
+    Set-Content -Path "log.txt" -Value "$($_)"
     exit 1
+}
+
+# AGREE TO EULA
+Add-Type -AssemblyName System.Windows.Forms
+
+$result = [System.Windows.Forms.MessageBox]::Show(
+    "Do you agree?", 
+    "Confirmation", 
+    [System.Windows.Forms.MessageBoxButtons]::YesNo,
+    [System.Windows.Forms.MessageBoxIcon]::Question
+)
+if ($result -eq [System.Windows.Forms.DialogResult]::Yes) {
+    Copy-Item "..\Config\run.bat" "run.bat" -Force
+    Set-Content -Path 'eula.txt' -Value 'eula=true'
+    # Continue with your script here
+} else {
+    Write-Host "Exiting program..."
+    Start-Sleep 1
+    exit
 }
